@@ -1,8 +1,8 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'myNewApp',
+  appId: 'com.devopts.chatDevOpts',
+  appName: 'chatDevOpts',
   webDir: 'www',
   bundledWebRuntime: false
 };

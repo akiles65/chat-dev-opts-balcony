@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">DevOpts</string>
+    <string name="title_activity_main">DevOpts</string>
+    <string name="package_name">com.devopts.chatDevOpts</string>
+    <string name="custom_url_scheme">com.devopts.chatDevOpts</string>
+</resources>

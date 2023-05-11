@@ -2,7 +2,7 @@
  * App Global CSS
  * ----------------------------------------------------------------------------
  * Put style rules here that you want to apply globally. These styles are for
- * the entire app and not just one component. Additionally, this file can be
+ * the entire app and not just one component. Additionally, this files can be
  * used as an entry point to import other CSS/Sass files to be included in the
  * output CSS.
  * For more information on global stylesheets, visit the documentation:
@@ -24,3 +24,54 @@
 @import "@ionic/angular/css/text-alignment.css";
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
+
+* {
+  --highlight-color: #fd4520;
+}
+
+ion-item.sc-ion-input-md-h:not(.item-label):not(.item-has-modern-input), ion-item:not(.item-label):not(.item-has-modern-input) .sc-ion-input-md-h {
+  --padding-start: 1rem;
+}
+
+.ion-valid.sc-ion-input-md-h {
+  --highlight-color: #fd4520;
+}
+
+.action-sheet-button.sc-ion-action-sheet-ios {
+  background: #212428;
+  color: #fd4520;
+}
+
+.action-sheet-button.sc-ion-action-sheet-md {
+  background: #212428;
+  color: #fd4520;
+}
+
+.action-sheet-button.sc-ion-action-sheet-md:hover {
+  color: #fd4520;
+}
+
+.action-sheet-selected.sc-ion-action-sheet-md {
+  background: rgba(#212428, 0.95);
+}
+
+.action-sheet-cancel.sc-ion-action-sheet-md {
+  background: rgba(#212428, 0.95);
+}
+
+.action-sheet-selected.sc-ion-action-sheet-ios::after {
+  background: rgba(var(--ion-color-dev-opts-rgb), 0.24);
+}
+
+.action-sheet-cancel.sc-ion-action-sheet-ios::after {
+  background: rgba(var(--ion-color-dev-opts-rgb), 0.24);
+}
+
+.input-fill-outline.sc-ion-input-md-h .input-outline-start.sc-ion-input-md, .input-fill-outline.sc-ion-input-md-h .input-outline-notch.sc-ion-input-md, .input-fill-outline.sc-ion-input-md-h .input-outline-end.sc-ion-input-md {
+  border: none;
+}
+
+:host(.ion-color:not(.item-fill-solid):not(.item-fill-outline)) .item-native, :host(.ion-color:not(.item-fill-solid):not(.item-fill-outline)) .item-inner {
+  border-color: #212428;
+}
+

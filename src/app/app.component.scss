@@ -1,6 +1,22 @@
 ion-menu ion-content {
-  --background: var(--ion-item-background, var(--ion-background-color, #fff));
+  --background: #212428;
 }
+
+.header {
+  text-align: center;
+  .t-color-1 {
+    color: #FFFFFF;
+  }
+
+  .t-color-2 {
+    color: #fd4520;
+  }
+  .sub-t {
+    margin: .5rem 0;
+    color: var(--ion-color-dev-opts);
+  }
+}
+
 
 ion-menu.md ion-content {
   --padding-start: 8px;
@@ -10,7 +26,7 @@ ion-menu.md ion-content {
 }
 
 ion-menu.md ion-list {
-  padding: 20px 0;
+  padding: 0 0 20px;
 }
 
 ion-menu.md ion-note {
@@ -23,7 +39,11 @@ ion-menu.md ion-note {
 }
 
 ion-menu.md ion-list#inbox-list {
-  border-bottom: 1px solid var(--ion-color-step-150, #d7d8da);
+  border-bottom: 2px solid var(--ion-color-dev-opts);
+}
+
+ion-menu.ios ion-list#inbox-list {
+  border-bottom: 2px solid var(--ion-color-dev-opts);
 }
 
 ion-menu.md ion-list#inbox-list ion-list-header {
@@ -47,18 +67,25 @@ ion-menu.md ion-item {
   --padding-start: 10px;
   --padding-end: 10px;
   border-radius: 4px;
+  --background: #212428;
 }
 
 ion-menu.md ion-item.selected {
-  --background: rgba(var(--ion-color-primary-rgb), 0.14);
+  --color: #fd4520;
+  --background: rgba(var(--ion-color-dev-opts-rgb), 0.24);
+}
+
+ion-menu.ios ion-item.selected {
+  --color: #fd4520;
+  --background: rgba(var(--ion-color-dev-opts-rgb), 0.24);
 }
 
 ion-menu.md ion-item.selected ion-icon {
-  color: var(--ion-color-primary);
+  color: #fd4520;
 }
 
 ion-menu.md ion-item ion-icon {
-  color: #616e7e;
+  color: var(--ion-color-dev-opts);
 }
 
 ion-menu.md ion-item ion-label {
@@ -82,15 +109,16 @@ ion-menu.ios ion-item {
   --padding-start: 16px;
   --padding-end: 16px;
   --min-height: 50px;
+  --background: #212428;
 }
 
 ion-menu.ios ion-item.selected ion-icon {
-  color: var(--ion-color-primary);
+  color: #fd4520;
 }
 
 ion-menu.ios ion-item ion-icon {
   font-size: 24px;
-  color: #73849a;
+  color: var(--ion-color-dev-opts);
 }
 
 ion-menu.ios ion-list#labels-list ion-list-header {
@@ -115,5 +143,18 @@ ion-note {
 }
 
 ion-item.selected {
-  --color: var(--ion-color-primary);
+  --color: #fd4520;
 }
+
+ion-item, ion-item.md, ion-item.ios {
+  --color: var(--ion-color-dev-opts);
+  img {
+    width: 7rem;
+    margin-bottom: 1rem;
+  }
+}
+
+.list-md, .list-ios {
+  background: #212428;
+}
+

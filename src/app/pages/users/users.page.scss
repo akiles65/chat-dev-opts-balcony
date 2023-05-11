@@ -1,0 +1,29 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+ion-toolbar {
+  color: var(--ion-color-dev-opts);
+  background-color: #212428;
+}
+
+ion-avatar {
+  width: 3rem;
+  height: 3rem;
+  margin: 1rem;
+}
+
+//ion-title {
+//  margin-right: 1rem;
+//}
+
+.user {
+  cursor: pointer;
+}
+
+.size {
+  font-size: 30px;
+  color: var(--ion-color-dev-opts);
+}
+

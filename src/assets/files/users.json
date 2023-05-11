@@ -1,0 +1,25 @@
+{
+  "data": [
+    {
+      "id": "0",
+      "name": "Negrito",
+      "state": "Cachorro",
+      "description": "Un canino color negro",
+      "image": "perrito1.jpg"
+    },
+    {
+      "id": "1",
+      "name": "Blanquito",
+      "state": "Cachorro",
+      "description": "Un canino color blanco",
+      "image": "perrito2.jpg"
+    },
+    {
+      "id": "2",
+      "name": "Marronsito",
+      "state": "Cachorro",
+      "description": "Un canino color marron",
+      "image": "perrito3.jpg"
+    }
+  ]
+}

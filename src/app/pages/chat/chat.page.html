@@ -1,0 +1,62 @@
+<ion-header [translucent]="true">
+
+  <ion-toolbar color="dev-opts">
+    <ion-buttons slot="start">
+      <ion-back-button (click)="backToUsers()"></ion-back-button>
+    </ion-buttons>
+    <h2 slot="end" *ngIf="receiverUser">{{receiverUser.username}}</h2>
+    <ion-avatar color="dev-opts" slot="end">
+      <img src="../../../assets/images/woman.png" *ngIf="receiverUser && receiverUser.gender === 'M'" alt="user"/>
+      <img src="../../../assets/images/male.png" *ngIf="receiverUser && receiverUser.gender === 'H'" alt="user"/>
+    </ion-avatar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <ion-grid *ngFor="let msj of messages">
+    <ion-row style="--background: #212428;" class="ion-justify-content-end" *ngIf="msj.senderId && msj.senderId === senderUser?.userId">
+      <ion-col size="7">
+        <ion-card>
+          <ion-card-content>
+            {{msj.message}}
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="ion-justify-content-start" *ngIf="msj.senderId && msj.senderId !== senderUser?.userId">
+      <ion-col size="8">
+        <ion-card>
+          <ion-card-content>
+            {{msj.message}}
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>
+
+<ion-footer [translucent]="true">
+
+  <form #message="ngForm" (ngSubmit)="sendMessage()" color="dev-opts">
+
+      <ion-toolbar id="container" color="dev-opts">
+        <ion-label id="box-msj">
+          <ion-input name="message"
+                        color="dev-opts"
+                        label="DevOpts Balcony"
+                        label-placement="floating"
+                        fill="outline"
+                        placeholder="Enter Message"
+                        [(ngModel)]="chat"></ion-input>
+        </ion-label>
+        <ion-button type="submit" color="dev-opts" slot="end" [disabled]="message.invalid">
+          <ion-icon class="size" name="paper-plane"></ion-icon>
+        </ion-button>
+      </ion-toolbar>
+
+  </form>
+
+</ion-footer>
