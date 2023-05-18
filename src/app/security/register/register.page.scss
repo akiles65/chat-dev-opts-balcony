@@ -27,29 +27,19 @@ ion-input {
   text-align: center;
 }
 
-ion-select {
-  width: 5rem;
-  justify-content: end;
-}
-
 ion-avatar {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 2rem 0;
-}
-
-.avatar {
-  border: solid 2.5px var(--ion-color-dev-opts);
-  margin-bottom: 3rem;
-  ion-icon {
-    cursor: pointer;
+  font-size: 40px;
+  cursor: pointer;
+  &:active {
+    color: #fd4520;
   }
 }
 
-.size {
-  font-size: 30px;
-  color: var(--ion-color-dev-opts);
+ion-img {
+  object-fit: fill;
 }
 
 .header {

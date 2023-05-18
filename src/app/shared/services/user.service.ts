@@ -8,6 +8,7 @@ import 'firebase/compat/firestore';
 firebase.initializeApp(environment.firebaseConfig);
 
 const db = firebase.firestore();
+const query = db.collection(DEV_OPTS.USER_COLLECTION);
 
 @Injectable({
   providedIn: 'root'
@@ -16,36 +17,33 @@ export class UserService {
 
   constructor() { }
 
-  async userRegister(post: IRegisterUser) {
-    const query = db.collection(DEV_OPTS.USER_COLLECTION);
+  async registerUser(post: IRegisterUser) {
     await query.add(post);
   }
 
-  getAllUsers(userId:any) {
-    // const user = localStorage.getItem(DEV_OPTS.USER_LOGIN);
-    // let ip = '';
-    // if (user) {
-    //   ip = JSON.parse(user).USER_IP;
-    // }
-    const query = db.collection(DEV_OPTS.USER_COLLECTION);
-    return query.where(DEV_OPTS.USER_IP, '!=', userId).get();
+  getAllUsers(userIp:any) {
+    return query.where(DEV_OPTS.USER_IP, '!=', userIp).get();
+  }
+
+  getUserConversations(userId:string) {
+    return query.doc(userId).collection(DEV_OPTS.CONVERSATIONS)
+      .orderBy('lastMessage', 'desc').get();
   }
 
   getUserByIp(ip: any) {
-    const query = db.collection(DEV_OPTS.USER_COLLECTION);
     return query.where(DEV_OPTS.USER_IP, '==', ip).get();
   }
 
   getUserById(id: any) {
-    return db.collection(DEV_OPTS.USER_COLLECTION).doc(id).get();
+    return query.doc(id).get();
+  }
+
+  async updateUser(id:string, post:IRegisterUser) {
+    await query.doc(id).update(post);
   }
 
   async setUser(user: any) {
     await localStorage.setItem(DEV_OPTS.USER_LOGIN, JSON.stringify(user));
   }
-
-  // setUserId(id: string) {
-  //   localStorage.setItem(DEV_OPTS.USER_ID, id);
-  // }
 
 }

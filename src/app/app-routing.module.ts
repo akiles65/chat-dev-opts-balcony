@@ -14,6 +14,11 @@ const routes: Routes = [
     loadChildren: () => import('./pages/chat/chat.module').then( m => m.ChatPageModule)
   },
   {
+    path: 'conversations',
+    loadChildren: () => import('./pages/conversations/conversations.module').then(m => m.ConversationsPageModule),
+    canActivate: [UserLoginGuard]
+  },
+  {
     path: 'login',
     loadChildren: () => import('./security/login/login.module').then( m => m.LoginPageModule)
   },

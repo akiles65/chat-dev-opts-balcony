@@ -1,0 +1,23 @@
+
+ion-row {
+  margin-top: 1rem;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+ion-avatar {
+  margin: 1rem;
+  cursor: pointer;
+  box-shadow: 0 10px 15px -3px rgba(#212428, .7);
+  &:active {
+    transform: scale(0.9);
+  }
+}
+
+ion-img {
+  object-fit: fill;
+}

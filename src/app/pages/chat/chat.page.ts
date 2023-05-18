@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { StorageService } from '../../shared/services/storage.service';
 import { UserService } from '../../shared/services/user.service';
 import { IMessages, IRegisterUser, IUser } from '../../shared/interfaces/IRegisterUser';
 import { MessagesService } from '../../shared/services/messages.service';
+import { IonContent } from '@ionic/angular';
 
 @Component({
   selector: 'app-chat',
@@ -12,6 +13,9 @@ import { MessagesService } from '../../shared/services/messages.service';
   styleUrls: ['./chat.page.scss'],
 })
 export class ChatPage implements OnInit {
+
+  @ViewChild('target', { static: false }) target?: ElementRef;
+  @ViewChild(IonContent, { static: false }) ionContent?: IonContent;
 
   id: any;
   messages:IMessages[] =[];
@@ -27,7 +31,13 @@ export class ChatPage implements OnInit {
               private msj: MessagesService) { }
 
   ngOnInit() {
-    this.userChat();
+    this.userChat().then(() => {
+      setTimeout(() => {
+        if (this.ionContent) {
+          this.ionContent.scrollToPoint(0, this.target?.nativeElement.offsetTop, 50).then();
+        }
+      }, 400);
+    });
   }
 
   getId() {
@@ -57,18 +67,23 @@ export class ChatPage implements OnInit {
           .onSnapshot((snapshot:any) => {
             snapshot.docChanges().forEach((change:any) => {
               this.messages.push(change.doc.data() as IMessages);
+              this.goToLastMessage(this.target?.nativeElement);
             });
         });
       }
   }
 
-  async sendMessage() {
+  async sendMessage(target:any) {
     const data = await this.loadingData();
+    const sender = await this.sender();
+    const receiver = await this.receiver();
     const senderId = this.storage.getUser().userId;
     const receiverId = this.activatedRoute.snapshot.paramMap.get("id");
     if (senderId && receiverId) {
       this.msj.postMessage(senderId, receiverId, data);
+      this.msj.postNewConversation(senderId, receiverId, sender, receiver);
       this.chat = '';
+      this.goToLastMessage(target);
     }
   }
 
@@ -81,6 +96,42 @@ export class ChatPage implements OnInit {
       message: this.chat,
       dateMessage: new Date(),
     };
+  }
+
+  sender(): IUser {
+    const userId = this.storage.getUser();
+    const user = this.receiverUser;
+    return {
+      userId: userId.userId,
+      avatar: user?.avatar,
+      username: user?.username,
+      message: this.chat,
+      unread: false,
+      lastMessage: new Date()
+    }
+  }
+
+  receiver(): IUser {
+    const userId = this.storage.getUser();
+    const user = this.storage.getUser();
+    return {
+      userId: userId.userId,
+      avatar: user?.avatar,
+      username: user?.username,
+      message: this.chat,
+      unread: true,
+      lastMessage: new Date()
+    }
+  }
+
+  goToLastMessage(target:any) {
+    if (this.ionContent) {
+      this.ionContent.scrollToPoint(0, target.offsetTop, 35).then();
+    }
+  }
+
+  backToConversations() {
+    this.router.navigateByUrl('/conversations').then();
   }
 
   backToUsers() {

@@ -17,6 +17,10 @@
 
         <form id="register" #register="ngForm" (ngSubmit)="postUser()" color="dev-opts">
           <img src="../assets/icon/DOB.png"/>
+          <ion-avatar id="open-modal">
+            <ion-icon name="person-add" *ngIf="avatar === ''"></ion-icon>
+            <ion-img src="../assets/images/{{avatar}}" *ngIf="avatar !== ''"></ion-img>
+          </ion-avatar>
           <ion-item color="dev-opts">
             <ion-input slot="end"
                        name="username"
@@ -26,11 +30,6 @@
                        fill="outline"
                        placeholder="Enter Username"
                        [(ngModel)]="username"></ion-input>
-
-            <ion-select slot="end" name="gender" aria-label="Fruit" interface="action-sheet" placeholder="Gender" [(ngModel)]="gender">
-              <ion-select-option value="H">Hombre</ion-select-option>
-              <ion-select-option value="M">Mujer</ion-select-option>
-            </ion-select>
           </ion-item>
 
           <ion-button type="submit" color="dev-opts" slot="end" [disabled]="register.invalid">
@@ -44,3 +43,5 @@
   </ion-grid>
 
 </ion-content>
+
+<app-avatars (avatarResponse)="addAvatar($event)"></app-avatars>

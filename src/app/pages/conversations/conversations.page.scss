@@ -1,0 +1,58 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+ion-toolbar {
+  color: var(--ion-color-dev-opts);
+  background-color: #212428;
+}
+
+ion-avatar {
+  width: 3rem;
+  height: 3rem;
+  margin: 1rem;
+}
+
+ion-img {
+  object-fit: fill;
+}
+
+.user {
+  cursor: pointer;
+}
+
+.notifications {
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+  span {
+    margin-top: .5rem;
+    font-size: .7rem;
+    color: #fd4520;
+  }
+}
+
+ion-avatar {
+
+}
+
+.msj-receiver {
+  margin-left: 2rem;
+  font-size: 1rem;
+  color: #000000;
+  font-weight: bold;
+}
+
+.msj-sender {
+  margin-left: 2rem;
+  font-size: .9rem;
+  color: var(--ion-color-dev-opts);
+  font-weight: normal;
+}
+
+.read {
+  margin-bottom: .5rem;
+  color: red;
+  font-size: .8rem;
+}

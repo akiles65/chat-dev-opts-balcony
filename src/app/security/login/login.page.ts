@@ -35,7 +35,7 @@ export class LoginPage implements OnInit {
               ...doc.data() as IRegisterUser
             }
             this.userService.setUser(this.userLogin).then(() => {
-              this.router.navigateByUrl('/users').then(() => {
+              this.router.navigateByUrl('/conversations').then(() => {
                 console.log('Login Success...');
               });
             })

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { StorageService } from '../../shared/services/storage.service';
 import { UserService } from '../../shared/services/user.service';
 import { IUser } from '../../shared/interfaces/IRegisterUser';
@@ -16,7 +15,7 @@ export class UsersPage implements OnInit {
   users: IUser[] = [];
   searchResult: any;
 
-  constructor(private http: HttpClient, private storage: StorageService, private userService: UserService, private router: Router) { }
+  constructor(private storage: StorageService, private userService: UserService, private router: Router) { }
 
   ngOnInit() {
     this.getAllUsers();

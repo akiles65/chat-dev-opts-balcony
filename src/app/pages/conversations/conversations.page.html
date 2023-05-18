@@ -16,12 +16,18 @@
 
 <ion-content [fullscreen]="true">
   <ion-list>
-    <ion-item class="user" *ngFor="let item of searchResult" (click)="getChat(item.userId)">
+    <ion-item class="user" *ngFor="let item of searchResult" (click)="getChat(item.receiverId)">
       <ion-avatar slot="start">
+<!--        <ion-icon class="read" name="alert-circle" *ngIf="item.receiverId === item.userId"></ion-icon>-->
         <ion-img src="../../../assets/images/{{item.avatar}}" *ngIf="item" alt="user"/>
       </ion-avatar>
       <ion-label>
         <h2>{{item.username}}</h2>
+        <p [ngClass]="(item.receiverId === item.userId) ? 'msj-receiver' : 'msj-sender'">{{item.message}}</p>
+      </ion-label>
+      <ion-label class="notifications" slot="end">
+        <ion-icon class="read" name="alert-circle" *ngIf="item.receiverId === item.userId"></ion-icon>
+        <span>{{item.lastMessage.toDate() | date:'mediumTime'}}</span>
       </ion-label>
     </ion-item>
   </ion-list>

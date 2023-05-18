@@ -13,7 +13,7 @@ import { StorageService } from "../../shared/services/storage.service";
 export class RegisterPage implements OnInit {
 
   username: any;
-  gender: any;
+  avatar: string = '';
 
   constructor(private ip: IpService,
               private storage: StorageService,
@@ -24,9 +24,9 @@ export class RegisterPage implements OnInit {
   }
 
   postUser() {
-    let data = this.loadingData();
-    let ip = this.storage.getIp();
-    this.user.userRegister(data).then(resp => {
+    const data = this.loadingData();
+    const ip = this.storage.getIp();
+    this.user.registerUser(data).then(resp => {
       this.user.getUserByIp(ip).then(resp => {
         resp.docs.map((doc:any) => {
           const userLogin = {
@@ -34,7 +34,7 @@ export class RegisterPage implements OnInit {
             ...doc.data() as IRegisterUser
           }
           this.user.setUser(userLogin).then(() => {
-            this.router.navigateByUrl('/users').then(() => {
+            this.router.navigateByUrl('/conversations').then(() => {
               console.log('Login Success...');
             });
           })
@@ -42,12 +42,11 @@ export class RegisterPage implements OnInit {
       })
     });
     this.username = '';
-    this.gender = '';
   }
 
   loadingData() {
     const data: IRegisterUser = {
-      gender: this.gender,
+      avatar: this.avatar,
       userIp: this.storage.getIp(),
       username: this.username,
       register: new Date()
@@ -55,4 +54,7 @@ export class RegisterPage implements OnInit {
     return data;
   }
 
+  addAvatar(value: string) {
+    this.avatar = value;
+  }
 }

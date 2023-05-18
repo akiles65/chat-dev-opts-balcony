@@ -14,12 +14,18 @@ ion-avatar {
   margin: 1rem;
 }
 
+ion-img {
+  object-fit: fill;
+}
+
 ion-label {
   margin: 0 20px;
 }
 
 ion-input {
-  border-bottom: solid 1px var(--ion-color-dev-opts);
+  //border-bottom: solid 1px var(--ion-color-dev-opts);
+  border-radius: 5px;
+  background-color: #FFFFFF;
 }
 
 ion-button {
@@ -40,17 +46,58 @@ ion-button {
   padding-right: 10px;
 }
 
-ion-card {
-  --background: var(--ion-color-dev-opts);
-  --color: #212428;
-  padding: .5rem;
-}
-
 ion-row {
   margin: 1rem 1.5rem;
 }
 
-ion-card #sender {
-  --background: #212428;
-  --color: var(--ion-color-dev-opts);
+ion-card {
+  display: block;
+  font-size: 1rem;
+  padding: .5rem;
+  min-width: 30%;
+}
+
+
+
+// New Container of Messages
+
+.container-message {
+  height: 100%;
+  padding: 2rem;
+  overflow: scroll;
+  background-color: #FFFFFF;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.message {
+  font-size: 1rem;
+  margin: 1rem 0;
+}
+
+.sender {
+  float: right;
+  background-color: #212428;
+  color: var(--ion-color-dev-opts);
+  text-align: right;
+  .date {
+    float: left;
+    text-align: left;
+    font-size: .6rem;
+    width: 100%;
+  }
+}
+
+.receiver {
+  float: left;
+  background-color: var(--ion-color-dev-opts);
+  color: #212428;
+  text-align: left;
+  .date {
+    float: right;
+    text-align: right;
+    font-size: .6rem;
+    width: 100%;
+  }
 }
