@@ -14,7 +14,7 @@ export class UserLoginGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-    const user = this.storage.getUser();
+    const user = this.storage.getUserStorage();
 
     return !!user;
   }

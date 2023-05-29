@@ -3,10 +3,12 @@
     <ion-buttons>
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <h2 slot="end" *ngIf="user">{{user.username}}</h2>
-    <ion-avatar color="dev-opts" slot="end">
-      <ion-img src="../../../assets/images/{{user.avatar}}" *ngIf="user" alt="user"/>
-    </ion-avatar>
+    <h2 slot="end" *ngIf="user">{{user.name}}</h2>
+    <ion-buttons slot="end">
+      <ion-avatar color="dev-opts">
+        <ion-img src="../../../assets/images/{{user.avatar}}" *ngIf="user" alt="user"/>
+      </ion-avatar>
+    </ion-buttons>
   </ion-toolbar>
 
   <ion-toolbar color="dev-opts">
@@ -17,11 +19,13 @@
 <ion-content [fullscreen]="true">
   <ion-list>
     <ion-item class="user" *ngFor="let item of searchResult" (click)="getChat(item.userId)">
-      <ion-avatar slot="start">
-        <ion-img src="../../../assets/images/{{item.avatar}}" *ngIf="item" alt="user"/>
-      </ion-avatar>
+      <ion-buttons>
+        <ion-avatar>
+          <ion-img src="../../../assets/images/{{item.avatar}}" *ngIf="item" alt="user"/>
+        </ion-avatar>
+      </ion-buttons>
       <ion-label>
-        <h2>{{item.username}}</h2>
+        <h2>{{item.name}}</h2>
       </ion-label>
     </ion-item>
   </ion-list>

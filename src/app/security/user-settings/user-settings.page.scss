@@ -1,25 +1,49 @@
+
+//////////////////// Update /////////////////////////////
+
 * {
   padding: 0;
 }
-ion-toolbar, ion-item, form {
-  background-color: #212428;
-  color: var(--ion-color-dev-opts);
+
+ion-content, ion-toolbar {
+  display: flex;
+  justify-content: center;
+  padding-top: 3rem;
+  --background: #212428;
 }
 
-ion-toolbar {
-  --min-height: 56px;
+.form {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  width: 25rem;
+  padding-top: 5rem;
+  margin: auto;
+  border-radius: 10px;
+  box-shadow: 0 10px 15px -3px rgba(#212428, .7);
 }
 
 ion-item {
+  color: var(--ion-color-dev-opts);
   padding: .5rem;
-  text-align: center;
+  width: 80%;
 }
 
-img {
+ion-img {
+  object-fit: fill;
   width: 10rem;
+}
+
+ion-avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 60px;
+  color: var(--ion-color-dev-opts);
+  cursor: pointer;
+  &:active {
+    font-size: 50px;
+  }
 }
 
 ion-input {
@@ -27,55 +51,17 @@ ion-input {
   text-align: center;
 }
 
-ion-avatar {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 40px;
-  cursor: pointer;
-  &:active {
-    color: #fd4520;
-  }
-}
-
-ion-img {
-  object-fit: fill;
-}
-
-.header {
-  text-align: center;
-  .title {
-    font-size: 2rem;
-    .t-color-1 {
-      color: #FFFFFF;
-    }
-
-    .t-color-2 {
-      color: #fd4520;
-    }
-  }
-}
-
-#register {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: absolute;
-  padding-top: 2rem;
-  width: 100%;
-  min-height: 30rem;
-  background: #212428;
-  transform: translateY(30%);
-}
-
-ion-button {
-  width: 15rem;
+.btn-submit {
+  width: 50%;
   height: 50px;
   border-radius: 1.5rem;
-  margin: 30px 0;
-  background-color: #212428;
+  margin: 50px 0 0 0;
   color: #fd4520;
 }
 
-
+.update {
+  margin: 10px 0 -30px;
+  font-weight: bold;
+  color: var(--ion-color-dev-opts);
+}
 

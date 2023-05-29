@@ -1,46 +1,84 @@
 <ion-header [translucent]="true">
-  <ion-toolbar color="dev-opts">
+  <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
+      <ion-back-button default-href="/"></ion-back-button>
     </ion-buttons>
-    <ion-title size="large" class="header">
-      <h1 class="title"><b class="t-color-1">DevOpts</b>&nbsp;<b class="t-color-2">Balcony</b></h1>
-    </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
 
-  <ion-grid>
-    <ion-row>
-      <ion-col sizeXl="5" sizeLg="7" sizeMd="7" sizeSm="9" offset-xl="3" offset-lg="2" offset-md="2" offset-sm="1">
+  <form #form="ngForm" class="form" (ngSubmit)="postUser()" color="dev-opts">
+    <ion-img src="../assets/icon/DOB.png"/>
+    <ion-avatar id="open-modal">
+      <ion-icon name="person-add" *ngIf="newUser.avatar === 'absent.png'"></ion-icon>
+      <ion-img src="../assets/images/{{newUser.avatar}}" *ngIf="newUser.avatar !== 'absent.png'"></ion-img>
+    </ion-avatar>
+    <ion-item color="dev-opts">
+      <ion-input type="text"
+                 name="username"
+                 color="dev-opts"
+                 label="Nombre de Usuario"
+                 label-placement="floating"
+                 fill="outline"
+                 placeholder="Ingrese Usuario"
+                 required="true"
+                 pattern="^[a-z0-9]{4,16}$"
+                 [(ngModel)]="newUser.username">
+      </ion-input>
+    </ion-item>
 
-        <form id="register" #register="ngForm" (ngSubmit)="postUser()" color="dev-opts">
-          <img src="../assets/icon/DOB.png"/>
-          <ion-avatar id="open-modal">
-            <ion-icon name="person-add" *ngIf="avatar === ''"></ion-icon>
-            <ion-img src="../assets/images/{{avatar}}" *ngIf="avatar !== ''"></ion-img>
-          </ion-avatar>
-          <ion-item color="dev-opts">
-            <ion-input slot="end"
-                       name="username"
-                       color="dev-opts"
-                       label="Username"
-                       label-placement="floating"
-                       fill="outline"
-                       placeholder="Enter Username"
-                       [(ngModel)]="username"></ion-input>
-          </ion-item>
+    <ion-item color="dev-opts">
+      <ion-input type="text"
+                 name="name"
+                 color="dev-opts"
+                 label="Nombre:"
+                 label-placement="floating"
+                 fill="outline"
+                 placeholder="Ingrese Nombre"
+                 required="true"
+                 [(ngModel)]="newUser.name">
+      </ion-input>
+    </ion-item>
 
-          <ion-button type="submit" color="dev-opts" slot="end" [disabled]="register.invalid">
-            Register
-          </ion-button>
+    <ion-item color="dev-opts">
+      <ion-input type="password"
+                 name="password1"
+                 color="dev-opts"
+                 label="Contraseña"
+                 label-placement="floating"
+                 fill="outline"
+                 placeholder="Ingrese Contraseña"
+                 required="true"
+                 pattern="^[a-z0-9]{4,16}$"
+                 [(ngModel)]="password.pass1">
+      </ion-input>
+    </ion-item>
 
-        </form>
+    <ion-item color="dev-opts">
+      <ion-input type="password"
+                 name="password2"
+                 color="dev-opts"
+                 label="Confirme Contraseña"
+                 label-placement="floating"
+                 fill="outline"
+                 placeholder="Ingrese Contraseña"
+                 required="true"
+                 pattern="^[a-z0-9]{4,16}$"
+                 [(ngModel)]="password.pass2">
+      </ion-input>
+    </ion-item>
 
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+    <ion-label>
+      <p class="register" *ngIf="invalidPassword">* Contraseñas no coinciden</p>
+      <p class="register" *ngIf="invalidUser">* Usuario ya registrado</p>
+    </ion-label>
+
+    <ion-button class="btn-submit" type="submit" color="dev-opts" [disabled]="form.invalid">
+      Registrar
+    </ion-button>
+
+  </form>
 
 </ion-content>
 

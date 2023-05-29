@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { StorageService } from '../../shared/services/storage.service';
 import { UserService } from '../../shared/services/user.service';
-import { IMessages, IRegisterUser, IUser } from '../../shared/interfaces/IRegisterUser';
+import { IMessages, IRegister, IUserLogin, IUsers } from '../../shared/interfaces/IRegisterUser';
 import { MessagesService } from '../../shared/services/messages.service';
 import { IonContent } from '@ionic/angular';
 
@@ -18,15 +18,15 @@ export class ChatPage implements OnInit {
   @ViewChild(IonContent, { static: false }) ionContent?: IonContent;
 
   id: any;
-  messages:IMessages[] =[];
-  receiverUser?:IUser;
-  senderUser?:IUser;
+  messages:IMessages[] = [];
+  receiverUser?:IUsers;
+  senderUser?:IUserLogin;
   chat: any;
 
   constructor(private activatedRoute: ActivatedRoute,
               private router: Router,
               private http: HttpClient,
-              private storage: StorageService,
+              private storageService: StorageService,
               private userService: UserService,
               private msj: MessagesService) { }
 
@@ -50,19 +50,19 @@ export class ChatPage implements OnInit {
     await this.userService.getUserById(id).then((resp:any) => {
       if (resp.exists) {
         user = {
-          userId: resp.id, ...resp.data() as IRegisterUser
+          userId: resp.id, ...resp.data() as IRegister
         }
       }
     });
     this.receiverUser = user;
-    this.senderUser = this.storage.getUser();
-    this.userMessages();
+    this.senderUser = await this.storageService.getUserStorage();
+    await this.userMessages();
   }
 
-  userMessages() {
+  async userMessages() {
     const receiverId = this.activatedRoute.snapshot.paramMap.get("id");
-    const senderId = this.storage.getUser().userId;
-      if (receiverId && senderId) {
+    const senderId = await this.senderUser?.userId;
+      if (senderId && receiverId) {
         this.msj.getMessages(senderId, receiverId)
           .onSnapshot((snapshot:any) => {
             snapshot.docChanges().forEach((change:any) => {
@@ -77,7 +77,7 @@ export class ChatPage implements OnInit {
     const data = await this.loadingData();
     const sender = await this.sender();
     const receiver = await this.receiver();
-    const senderId = this.storage.getUser().userId;
+    const senderId = await this.senderUser?.userId;
     const receiverId = this.activatedRoute.snapshot.paramMap.get("id");
     if (senderId && receiverId) {
       this.msj.postMessage(senderId, receiverId, data);
@@ -89,38 +89,38 @@ export class ChatPage implements OnInit {
 
   loadingData(): IMessages {
     const receiverId = this.getId();
-    const senderId = this.storage.getUser();
+    const senderId = this.senderUser;
     return {
       receiverId: receiverId,
-      senderId: senderId.userId,
+      senderId: senderId?.userId,
       message: this.chat,
       dateMessage: new Date(),
     };
   }
 
-  sender(): IUser {
-    const userId = this.storage.getUser();
+  sender(): IUsers {
     const user = this.receiverUser;
     return {
-      userId: userId.userId,
       avatar: user?.avatar,
-      username: user?.username,
+      lastUpdate: new Date(),
+      name: user?.name,
       message: this.chat,
+      userId: this.senderUser?.userId,
       unread: false,
-      lastMessage: new Date()
+      username: user?.username
     }
   }
 
-  receiver(): IUser {
-    const userId = this.storage.getUser();
-    const user = this.storage.getUser();
+  receiver(): IUsers {
+    const user = this.senderUser;
     return {
-      userId: userId.userId,
       avatar: user?.avatar,
-      username: user?.username,
+      lastUpdate: new Date(),
+      name: user?.name,
       message: this.chat,
+      userId: user?.userId,
       unread: true,
-      lastMessage: new Date()
+      username: user?.username
     }
   }
 
@@ -128,13 +128,5 @@ export class ChatPage implements OnInit {
     if (this.ionContent) {
       this.ionContent.scrollToPoint(0, target.offsetTop, 35).then();
     }
-  }
-
-  backToConversations() {
-    this.router.navigateByUrl('/conversations').then();
-  }
-
-  backToUsers() {
-    this.router.navigateByUrl('/users').then();
   }
 }

@@ -1,12 +1,11 @@
 <ion-content class="ion-padding">
 
-  <ion-modal #modal trigger="open-modal">
+  <ion-modal #modal backdrop-dismiss="false" trigger="open-modal">
     <ng-template>
       <ion-content>
         <ion-toolbar>
-          <ion-title>Avatars</ion-title>
           <ion-buttons slot="end">
-            <ion-button color="light" (click)="modal.dismiss()">Close</ion-button>
+            <ion-button color="light" (click)="modal.dismiss()">Cerrar</ion-button>
           </ion-buttons>
         </ion-toolbar>
 

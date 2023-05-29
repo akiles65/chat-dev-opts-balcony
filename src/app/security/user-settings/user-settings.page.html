@@ -3,44 +3,39 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title size="large" class="header">
-      <h1 class="title"><b class="t-color-1">DevOpts</b>&nbsp;<b class="t-color-2">Balcony</b></h1>
-    </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
 
-  <ion-grid>
-    <ion-row>
-      <ion-col sizeXl="5" sizeLg="7" sizeMd="7" sizeSm="9" offset-xl="3" offset-lg="2" offset-md="2" offset-sm="1">
+  <form #form="ngForm" class="form" (ngSubmit)="updateUser()" color="dev-opts">
+    <ion-img src="../assets/icon/DOB.png"/>
+    <ion-avatar id="open-modal">
+      <ion-icon name="person-add" *ngIf="user.avatar === 'absent.png'"></ion-icon>
+      <ion-img src="../assets/images/{{user.avatar}}" *ngIf="user.avatar !== 'absent.png'"></ion-img>
+    </ion-avatar>
+    <ion-item color="dev-opts">
+      <ion-input type="text"
+                 name="name"
+                 color="dev-opts"
+                 label="Nombre del Usuario"
+                 label-placement="floating"
+                 fill="outline"
+                 placeholder="Ingrese Nombre"
+                 required="true"
+                 [(ngModel)]="user.name">
+      </ion-input>
+    </ion-item>
 
-        <form id="register" #update="ngForm" (ngSubmit)="updateUser()" color="dev-opts">
-          <img src="../assets/icon/DOB.png"/>
-          <ion-avatar id="open-modal">
-            <ion-icon name="person-add" *ngIf="avatar === ''"></ion-icon>
-            <ion-img src="../assets/images/{{avatar}}" *ngIf="avatar !== ''"></ion-img>
-          </ion-avatar>
-          <ion-item color="dev-opts">
-            <ion-input slot="end"
-                       name="username"
-                       color="dev-opts"
-                       label="Username"
-                       label-placement="floating"
-                       fill="outline"
-                       placeholder="Enter Username"
-                       [(ngModel)]="username"></ion-input>
-          </ion-item>
+    <ion-label>
+      <p class="update" *ngIf="userUpdate">* Usuario Actualizado</p>
+    </ion-label>
 
-          <ion-button type="submit" color="dev-opts" slot="end" [disabled]="update.invalid">
-            Update
-          </ion-button>
+    <ion-button class="btn-submit" type="submit" color="dev-opts" [disabled]="form.invalid">
+      Actualizar
+    </ion-button>
 
-        </form>
-
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  </form>
 
 </ion-content>
 

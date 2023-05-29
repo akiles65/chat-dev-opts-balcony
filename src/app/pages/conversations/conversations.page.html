@@ -3,10 +3,12 @@
     <ion-buttons>
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <h2 slot="end" *ngIf="user">{{user.username}}</h2>
-    <ion-avatar color="dev-opts" slot="end">
-      <ion-img src="../../../assets/images/{{user.avatar}}" *ngIf="user" alt="user"/>
-    </ion-avatar>
+    <h2 slot="end" *ngIf="user">{{user.name}}</h2>
+    <ion-buttons slot="end">
+      <ion-avatar color="dev-opts">
+        <ion-img src="../../../assets/images/{{user.avatar}}" *ngIf="user" alt="user"/>
+      </ion-avatar>
+    </ion-buttons>
   </ion-toolbar>
 
   <ion-toolbar color="dev-opts">
@@ -14,21 +16,37 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" color="dev-opts">
   <ion-list>
-    <ion-item class="user" *ngFor="let item of searchResult" (click)="getChat(item.receiverId)">
-      <ion-avatar slot="start">
-<!--        <ion-icon class="read" name="alert-circle" *ngIf="item.receiverId === item.userId"></ion-icon>-->
-        <ion-img src="../../../assets/images/{{item.avatar}}" *ngIf="item" alt="user"/>
-      </ion-avatar>
-      <ion-label>
-        <h2>{{item.username}}</h2>
-        <p [ngClass]="(item.receiverId === item.userId) ? 'msj-receiver' : 'msj-sender'">{{item.message}}</p>
-      </ion-label>
-      <ion-label class="notifications" slot="end">
-        <ion-icon class="read" name="alert-circle" *ngIf="item.receiverId === item.userId"></ion-icon>
-        <span>{{item.lastMessage.toDate() | date:'mediumTime'}}</span>
-      </ion-label>
-    </ion-item>
+    <ion-item-sliding *ngFor="let item of searchResult">
+      <ion-item-options side="start">
+        <ion-item-option color="danger" (click)="setCookies()">
+          <ion-icon slot="icon-only" name="person-add"></ion-icon>
+        </ion-item-option>
+        <ion-item-option color="danger" (click)="getUserStorage()">
+          <ion-icon slot="icon-only" name="person"></ion-icon>
+        </ion-item-option>
+        <ion-item-option color="danger" (click)="delete()">
+          <ion-icon slot="icon-only" name="trash"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+
+      <ion-item class="user" (click)="getChat(item.receiverId)">
+        <ion-buttons>
+          <ion-avatar>
+            <ion-img src="../../../assets/images/{{item.avatar}}" *ngIf="item" alt="user"/>
+          </ion-avatar>
+        </ion-buttons>
+        <ion-label>
+          <h2>{{item.name}}</h2>
+          <p [ngClass]="(item.unread && item.receiverId === item.userId) ? 'receiver' : 'sender'">{{item.message}}</p>
+        </ion-label>
+        <ion-label class="notifications" slot="end">
+          <ion-icon class="read" name="alert-circle" *ngIf="(item.unread && item.receiverId === item.userId)"></ion-icon>
+          <span>{{item.lastUpdate.toDate() | date:'mediumTime'}}</span>
+        </ion-label>
+      </ion-item>
+    </ion-item-sliding>
+
   </ion-list>
 </ion-content>

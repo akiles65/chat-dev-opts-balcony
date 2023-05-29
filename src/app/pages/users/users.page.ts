@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { StorageService } from '../../shared/services/storage.service';
 import { UserService } from '../../shared/services/user.service';
-import { IUser } from '../../shared/interfaces/IRegisterUser';
+import { IUsers, IUserLogin } from '../../shared/interfaces/IRegisterUser';
 import { Router } from "@angular/router";
 
 @Component({
@@ -11,15 +11,17 @@ import { Router } from "@angular/router";
 })
 export class UsersPage implements OnInit {
 
-  user?:IUser;
-  users: IUser[] = [];
+  user?:IUserLogin;
+  users: IUsers[] = [];
   searchResult: any;
 
-  constructor(private storage: StorageService, private userService: UserService, private router: Router) { }
+  constructor(private storageService: StorageService,
+              private userService: UserService,
+              private router: Router) { }
 
-  ngOnInit() {
-    this.getAllUsers();
-    this.user = this.storage.getUser();
+  async ngOnInit() {
+    await this.getAllUsers();
+    this.user = await this.storageService.getUserStorage();
   }
 
   searchUser(search: any) {
@@ -27,16 +29,16 @@ export class UsersPage implements OnInit {
     this.searchResult = this.users;
     if(text && text.trim() != '') {
       this.searchResult = this.searchResult.filter((user: any) => {
-        return (user.username.toLowerCase().indexOf(text.toLowerCase()) > -1);
+        return (user.name.toLowerCase().indexOf(text.toLowerCase()) > -1);
       });
     }
   }
 
-  getAllUsers() {
-    const userId = this.storage.getIp();
-    this.userService.getAllUsers(userId).then((resp:any) => {
+  async getAllUsers() {
+    const userIp = await this.storageService.getIpStorage();
+    this.userService.getAllUsers(userIp).then((resp:any) => {
         resp.docs.map((doc:any) => {
-          this.users.push({userId: doc.id, ...doc.data()} as IUser);
+          this.users.push({userId: doc.id, ...doc.data()} as IUsers);
         });
       this.searchResult = this.users;
     });

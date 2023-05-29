@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
-import { DEV_OPTS } from "../constants/constants";
+import { DEV_OPTS } from '../constants/constants';
+import { HttpClient } from '@angular/common/http';
 
 
 @Injectable({

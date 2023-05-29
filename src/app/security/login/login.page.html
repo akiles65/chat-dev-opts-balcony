@@ -1,16 +1,48 @@
-<ion-header [translucent]="true">
-  <ion-toolbar color="dev-opts">
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title size="large" class="header">
-      <h1 class="title"><b class="t-color-1">DevOpts</b>&nbsp;<b class="t-color-2">Balcony</b></h1>
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
 
 <ion-content [fullscreen]="true">
-  <div id="container">
-    <button ion-button class="btn" (click)="login()">Login</button>
-  </div>
+
+  <form #form="ngForm" class="form" (ngSubmit)="login()" color="dev-opts">
+    <ion-img src="../assets/icon/DOB.png" />
+    <ion-item color="dev-opts">
+      <ion-input type="text"
+                 name="username"
+                 color="dev-opts"
+                 label="Nombre de Usuario"
+                 label-placement="floating"
+                 fill="outline"
+                 placeholder="Ingrese Usuario"
+                 required="true"
+                 pattern="^[a-z0-9]{2,16}$"
+                 [(ngModel)]="user.username">
+      </ion-input>
+    </ion-item>
+
+    <ion-item color="dev-opts">
+      <ion-input type="password"
+                 name="password"
+                 color="dev-opts"
+                 label="Contraseña"
+                 label-placement="floating"
+                 fill="outline"
+                 placeholder="Ingrese Contraseña"
+                 required="true"
+                 pattern="^[a-z0-9]{4,16}$"
+                 [(ngModel)]="user.password">
+      </ion-input>
+    </ion-item>
+
+    <ion-label>
+      <p class="invalid" *ngIf="validUser">* Usuario o Contraseña incorrectos</p>
+    </ion-label>
+
+    <ion-button class="btn-submit" type="submit" color="dev-opts" [disabled]="form.invalid">
+      Ingresar
+    </ion-button>
+
+    <ion-label>
+      <a class="register" routerLink="/register">Registrar</a>
+    </ion-label>
+
+  </form>
+
 </ion-content>

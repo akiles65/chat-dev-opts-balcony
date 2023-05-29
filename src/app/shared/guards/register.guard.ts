@@ -8,13 +8,13 @@ import { StorageService } from "../services/storage.service";
 })
 export class RegisterGuard implements CanActivate {
 
-  constructor(private storage: StorageService) { }
+  constructor(private storageService: StorageService) { }
 
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-    const user = this.storage.getUser();
+    const user = this.storageService.getUserStorage();
 
     return !user;
   }

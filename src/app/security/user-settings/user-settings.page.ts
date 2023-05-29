@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { IRegisterUser } from "../../shared/interfaces/IRegisterUser";
-import { StorageService } from "../../shared/services/storage.service";
-import { UserService } from "../../shared/services/user.service";
-import { Router } from "@angular/router";
+import { IRegister, IUpdateUser, IUserLogin } from '../../shared/interfaces/IRegisterUser';
+import { StorageService } from '../../shared/services/storage.service';
+import { UserService } from '../../shared/services/user.service';
 
 @Component({
   selector: 'app-user-settings',
@@ -10,52 +9,56 @@ import { Router } from "@angular/router";
   styleUrls: ['./user-settings.page.scss'],
 })
 export class UserSettings implements OnInit {
-  username: any;
-  avatar: string = '';
-  gender: any = '';
 
-  constructor(private storage: StorageService,
-              private user: UserService,
-              private router: Router) { }
+  user:IUpdateUser = {
+    avatar: 'absent.png',
+    userIp: '',
+    name: '',
+    dateUpdate: new Date()
+  }
+  myUser:IUserLogin;
+  userUpdate = false;
 
-  ngOnInit() {
+  constructor(private storageService: StorageService,
+              private userService: UserService) { }
+
+  async ngOnInit() {
+    this.user.userIp = await this.storageService.getIpStorage();
+    this.myUser = await this.storageService.getUserStorage();
   }
 
   updateUser() {
-    const data = this.loadingData();
-    const id = this.storage.getUser().userId;
-    this.user.updateUser(id, data).then(resp => {
-    this.userUpdated(id);
-    });
-    this.username = '';
-    this.gender = '';
+    const id = this.myUser.userId;
+    if (id) {
+      this.userService.updateUser(id, this.user).then(() => {
+        this.userUpdated(id);
+      });
+    }
   }
 
   userUpdated(id:string) {
-    this.user.getUserById(id).then(resp => {
-      const newUser = {
+    this.userService.getUserById(id).then(resp => {
+      const userUpdate = {
         userId: resp.id,
-        ...resp.data()
+        ...resp.data() as IRegister
       };
-      this.user.setUser(newUser).then(() => {
-        this.router.navigateByUrl('/users').then(() => {
-          console.log('Login Success...');
-        });
-      })
+      this.storageService.setUserStorage(userUpdate).then(() => {
+        this.userUpdate = true;
+        this.reset();
+      });
     });
   }
 
-  loadingData() {
-    const data: IRegisterUser = {
-      avatar: this.avatar,
-      userIp: this.storage.getIp(),
-      username: this.username,
-      register: new Date()
-    }
-    return data;
+  reset() {
+    this.user = {
+      avatar: 'absent.png',
+      userIp: '',
+      name: '',
+      dateUpdate: new Date()
+    };
   }
 
   newAvatar(value:string) {
-    this.avatar = value;
+    this.user.avatar = value;
   }
 }

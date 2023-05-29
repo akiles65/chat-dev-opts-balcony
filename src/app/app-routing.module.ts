@@ -24,8 +24,7 @@ const routes: Routes = [
   },
   {
     path: 'register',
-    loadChildren: () => import('./security/register/register.module').then( m => m.RegisterPageModule),
-    canActivate: [RegisterGuard]
+    loadChildren: () => import('./security/register/register.module').then( m => m.RegisterPageModule)
   },
   {
     path: 'settings',

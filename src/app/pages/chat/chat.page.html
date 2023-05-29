@@ -1,13 +1,14 @@
 <ion-header [translucent]="true">
   <ion-toolbar color="dev-opts">
     <ion-buttons slot="start">
-      <ion-back-button *ngIf="messages.length === 0" (click)="backToUsers()"></ion-back-button>
-      <ion-back-button *ngIf="messages.length > 0" (click)="backToConversations()"></ion-back-button>
+      <ion-back-button default-href="/"></ion-back-button>
     </ion-buttons>
-    <h2 slot="end" *ngIf="receiverUser">{{receiverUser.username}}</h2>
-    <ion-avatar color="dev-opts" slot="end">
-      <ion-img src="../../../assets/images/{{receiverUser.avatar}}" *ngIf="receiverUser" alt="user"/>
-    </ion-avatar>
+    <h2 slot="end" *ngIf="receiverUser">{{receiverUser.name}}</h2>
+    <ion-buttons slot="end">
+      <ion-avatar color="dev-opts">
+        <ion-img src="../../../assets/images/{{receiverUser.avatar}}" *ngIf="receiverUser" alt="user"/>
+      </ion-avatar>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -41,7 +42,7 @@
                         color="dev-opts"
                         label=""
                         fill="outline"
-                        placeholder="Enter Message"
+                        placeholder="Ingrese Mensaje"
                         [(ngModel)]="chat"></ion-input>
         </ion-label>
         <ion-button type="submit" color="dev-opts" slot="end" [disabled]="message.invalid">

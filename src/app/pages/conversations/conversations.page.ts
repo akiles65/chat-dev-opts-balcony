@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { IUser } from "../../shared/interfaces/IRegisterUser";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { IUsers, IUserLogin } from "../../shared/interfaces/IRegisterUser";
 import { StorageService } from "../../shared/services/storage.service";
 import { UserService } from "../../shared/services/user.service";
 import { Router } from "@angular/router";
+import { IonList } from "@ionic/angular";
+import { MessagesService } from "../../shared/services/messages.service";
 
 @Component({
   selector: 'app-conversations',
@@ -11,16 +13,20 @@ import { Router } from "@angular/router";
 })
 export class ConversationsPage implements OnInit {
 
-  user?:IUser;
-  users: IUser[] = [];
+  @ViewChild(IonList) ionList:IonList;
+
+  user?:IUserLogin;
+  users: IUsers[] = [];
   searchResult: any;
 
-  constructor(private storage: StorageService, private userService: UserService, private router: Router) { }
+  constructor(private messageService: MessagesService,
+              private storageService: StorageService,
+              private userService: UserService,
+              private router: Router) { }
 
-  ngOnInit() {
-    console.log('hola');
-    this.getUserConversations();
-    this.user = this.storage.getUser();
+  async ngOnInit() {
+    this.user = await this.storageService.getUserStorage();
+    await this.getUserConversations();
   }
 
   searchUser(search: any) {
@@ -28,35 +34,70 @@ export class ConversationsPage implements OnInit {
     this.searchResult = this.users;
     if(text && text.trim() != '') {
       this.searchResult = this.searchResult.filter((user: any) => {
-        return (user.username.toLowerCase().indexOf(text.toLowerCase()) > -1);
+        return (user.name.toLowerCase().indexOf(text.toLowerCase()) > -1);
       });
     }
   }
 
-  getUserConversations() {
-    const userId = this.storage.getUser().userId;
+  async getUserConversations() {
+    const user: IUserLogin = await this.storageService.getUserStorage();
 
-    // if (userId) {
-    //   this.userService.getUserConversations(userId)
-    //     .onSnapshot((snapshot:any) => {
-    //       console.log(snapshot);
-    //       snapshot.docChanges().forEach((change:any) => {
-    //         this.users.push({receiverId: change.doc.id, ...change.doc.data()} as IUser);
-    //       });
-    //       this.searchResult = this.users;
-    //       // this.users = [];
-    //     });
-    // }
-    this.userService.getUserConversations(userId).then((resp:any) => {
-      resp.docs.map((doc:any) => {
-        this.users.push({receiverId: doc.id, ...doc.data()} as IUser);
+    if (user.userId) {
+      this.userService.getUserConversations(user.userId)
+        .onSnapshot((snapshot:any) => {
+          snapshot.docChanges().forEach(() => {
+            this.updated(user.userId);
+          });
+        });
+    }
+  }
+
+  updated(userId:any) {
+    if (userId) {
+      this.userService.getUserConversations(userId)
+        .get().then((resp:any) => {
+        this.users = [];
+        resp.docs.map((doc:any) => {
+          this.users.push({
+            receiverId: doc.id,
+            ...doc.data()
+          } as IUsers);
+        });
+        this.searchResult = this.users;
       });
-      this.searchResult = this.users;
+    }
+  }
+
+  getChat(receiverId:string) {
+    const senderId = this.user?.userId;
+    this.router.navigateByUrl(`/chat/${receiverId}`).then(() => {
+      if (senderId) {
+        this.messageService.readMessage(senderId, receiverId);
+      }
     });
   }
 
-  getChat(id:string) {
-    this.router.navigateByUrl(`/chat/${id}`).then();
+  setCookies() {
+    this.storageService.setCookies().then(() => {
+      this.ionList.closeSlidingItems().then(() => {
+        console.log('Enviar Cookies..!');
+      });
+    });
   }
 
+  getUserStorage() {
+    const cookies = this.storageService.getCookies();
+    console.log(cookies);
+    this.ionList.closeSlidingItems().then(() => {
+      console.log('Octener Cookies..!');
+    });
+  }
+
+  delete() {
+    this.storageService.deleteCookies().then(() => {
+      this.ionList.closeSlidingItems().then(() => {
+        console.log('Eliminar Cookies..!');
+      });
+    });
+  }
 }

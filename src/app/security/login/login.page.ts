@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { IpService } from '../../shared/services/ip.service';
-import { IRegisterUser } from '../../shared/interfaces/IRegisterUser';
+import { AuthService } from '../../shared/services/auth.service';
+import { ILogin, IRegister} from '../../shared/interfaces/IRegisterUser';
 import { Router } from '@angular/router';
 import { StorageService } from '../../shared/services/storage.service';
-import { UserService } from '../../shared/services/user.service';
 
 @Component({
   selector: 'app-login',
@@ -12,40 +11,45 @@ import { UserService } from '../../shared/services/user.service';
 })
 export class LoginPage implements OnInit {
 
-  userLogin?: any;
+  validUser = false;
+  user: ILogin = {
+    username: '',
+    password: ''
+  };
 
-  constructor(private ipService: IpService,
+  constructor(private authService: AuthService,
               private router: Router,
-              private storage: StorageService,
-              private userService: UserService) { }
+              private storageService: StorageService) { }
 
   async ngOnInit() {
-    this.storage.cleanStorage();
-    await this.ipService.getIp();
+    this.storageService.cleanStorage();
+    await this.storageService.getIp();
   }
 
   login() {
-    let ip = this.storage.getIp();
-    if (ip) {
-      this.userService.getUserByIp(ip).then((resp:any) => {
-        if (resp.docs.length != 0) {
-          resp.docs.map((doc:any) => {
-            this.userLogin = {
-              userId:doc.id,
-              ...doc.data() as IRegisterUser
-            }
-            this.userService.setUser(this.userLogin).then(() => {
-              this.router.navigateByUrl('/conversations').then(() => {
-                console.log('Login Success...');
-              });
-            })
-          });
-        } else {
-          this.router.navigateByUrl('/register').then(() => {
-            console.log('Register Required...');
-          });
-        }
-      });
+    this.validUser = true;
+    this.authService.getUser(this.user).then((resp:any) => {
+      if (resp.docs.length === 1) {
+        resp.docs.map((doc:any) => {
+          const userLogin = {
+            userId:doc.id,
+            ...doc.data() as IRegister
+          }
+          this.reset();
+          this.storageService.setUserStorage(userLogin).then(() => {
+            this.router.navigateByUrl('/conversations');
+          })
+        });
+      } else {
+        this.validUser = true;
+      }
+    });
+  }
+
+  reset() {
+    this.user = {
+      username: '',
+      password: ''
     }
   }
 }

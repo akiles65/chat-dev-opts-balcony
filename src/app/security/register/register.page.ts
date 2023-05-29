@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from "../../shared/services/user.service";
-import { IRegisterUser } from "../../shared/interfaces/IRegisterUser";
-import { IpService } from "../../shared/services/ip.service";
-import { Router } from "@angular/router";
-import { StorageService } from "../../shared/services/storage.service";
+import { AuthService } from '../../shared/services/auth.service';
+import { IRegister } from '../../shared/interfaces/IRegisterUser';
+import { Router } from '@angular/router';
+import { StorageService } from '../../shared/services/storage.service';
+import { UserService } from '../../shared/services/user.service';
 
 @Component({
   selector: 'app-register',
@@ -12,49 +12,92 @@ import { StorageService } from "../../shared/services/storage.service";
 })
 export class RegisterPage implements OnInit {
 
-  username: any;
-  avatar: string = '';
+  password = {
+    pass1: '',
+    pass2: ''
+  }
 
-  constructor(private ip: IpService,
-              private storage: StorageService,
-              private user: UserService,
+  newUser:IRegister = {
+    avatar: 'absent.png',
+    name: '',
+    password: '',
+    register: new Date(),
+    userIp: '',
+    username: '',
+  }
+
+  invalidPassword = false;
+  invalidUser = false;
+
+  constructor(private storageService: StorageService,
+              private userService: UserService,
+              private authService: AuthService,
               private router: Router) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.newUser.userIp = await this.storageService.getIpStorage();
   }
 
   postUser() {
-    const data = this.loadingData();
-    const ip = this.storage.getIp();
-    this.user.registerUser(data).then(resp => {
-      this.user.getUserByIp(ip).then(resp => {
-        resp.docs.map((doc:any) => {
-          const userLogin = {
-            userId:doc.id,
-            ...doc.data() as IRegisterUser
-          }
-          this.user.setUser(userLogin).then(() => {
-            this.router.navigateByUrl('/conversations').then(() => {
-              console.log('Login Success...');
-            });
-          })
-        });
+    this.invalidUser = false;
+    this.invalidPassword = false;
+    const validPassword = this.validatePassword(this.password.pass1, this.password.pass2);
+
+    if (validPassword && this.newUser.username) {
+      this.authService.usernameValidate(this.newUser.username).then((resp:any) => {
+        if (resp.docs.length === 0) {
+          this.userService.registerUser(this.newUser).then(() => {
+            this.userService.getUserByIp(this.newUser.userIp).then(resp => {
+              resp.docs.map((doc:any) => {
+                const userLogin = {
+                  userId: doc.id,
+                  ...doc.data() as IRegister
+                }
+                this.storageService.setUserStorage(userLogin).then(() => {
+                  this.router.navigateByUrl('/conversations').then(() => {
+                  });
+                })
+              });
+            })
+            this.reset();
+          });
+        } else {
+          this.invalidUser = true;
+        }
       })
-    });
-    this.username = '';
+    } else {
+      this.invalidPassword = true;
+    }
   }
 
-  loadingData() {
-    const data: IRegisterUser = {
-      avatar: this.avatar,
-      userIp: this.storage.getIp(),
-      username: this.username,
-      register: new Date()
+  validatePassword(pass1:string, pass2:string) {
+    if (pass1 === pass2) {
+      this.newUser.password = pass1;
+      return true;
+    } else {
+      return false;
     }
-    return data;
+  }
+
+  reset() {
+    this.password = {
+      pass1: '',
+      pass2: ''
+    }
+
+    this.invalidPassword = false;
+
+    this.newUser = {
+      avatar: 'absent.png',
+      name: '',
+      password: '',
+      register: new Date(),
+      userIp: '',
+      username: '',
+    }
   }
 
   addAvatar(value: string) {
-    this.avatar = value;
+    this.newUser.avatar = value;
   }
 }
