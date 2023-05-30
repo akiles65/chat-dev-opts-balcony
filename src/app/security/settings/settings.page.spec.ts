@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { UserSettings } from './user-settings.page';
+import { UserSettings } from './settings.page';
 
 describe('HomePage', () => {
   let component: UserSettings;

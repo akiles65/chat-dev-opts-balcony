@@ -4,9 +4,9 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { UserSettingsRoutingModule } from './user-settings-routing.module';
+import { SettingsRoutingModule } from './settings-routing.module';
 
-import { UserSettings } from './user-settings.page';
+import { UserSettings } from './settings.page';
 import { AvatarsPageModule } from "../../shared/components/avatars/avatars.module";
 
 @NgModule({
@@ -14,9 +14,9 @@ import { AvatarsPageModule } from "../../shared/components/avatars/avatars.modul
         CommonModule,
         FormsModule,
         IonicModule,
-        UserSettingsRoutingModule,
+        SettingsRoutingModule,
         AvatarsPageModule
     ],
   declarations: [UserSettings]
 })
-export class UserSettingsModule {}
+export class SettingsModule {}

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { UserSettings } from './user-settings.page';
+import { UserSettings } from './settings.page';
 
 const routes: Routes = [
   {
@@ -14,4 +14,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class UserSettingsRoutingModule {}
+export class SettingsRoutingModule {}

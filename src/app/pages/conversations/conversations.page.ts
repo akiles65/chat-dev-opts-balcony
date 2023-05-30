@@ -1,10 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IUsers, IUserLogin } from "../../shared/interfaces/IRegisterUser";
-import { StorageService } from "../../shared/services/storage.service";
-import { UserService } from "../../shared/services/user.service";
-import { Router } from "@angular/router";
-import { IonList } from "@ionic/angular";
-import { MessagesService } from "../../shared/services/messages.service";
+import { IUsers, IUserLogin } from '../../shared/interfaces/IRegisterUser';
+import { StorageService } from '../../shared/services/storage.service';
+import { UserService } from '../../shared/services/user.service';
+import { Router } from '@angular/router';
+import { IonList } from '@ionic/angular';
+import { MessagesService } from '../../shared/services/messages.service';
+import { CookiesService } from '../../shared/services/cookies.service';
 
 @Component({
   selector: 'app-conversations',
@@ -22,6 +23,7 @@ export class ConversationsPage implements OnInit {
   constructor(private messageService: MessagesService,
               private storageService: StorageService,
               private userService: UserService,
+              private cookiesService: CookiesService,
               private router: Router) { }
 
   async ngOnInit() {
@@ -78,7 +80,7 @@ export class ConversationsPage implements OnInit {
   }
 
   setCookies() {
-    this.storageService.setCookies().then(() => {
+    this.cookiesService.setCookies().then(() => {
       this.ionList.closeSlidingItems().then(() => {
         console.log('Enviar Cookies..!');
       });
@@ -86,7 +88,7 @@ export class ConversationsPage implements OnInit {
   }
 
   getUserStorage() {
-    const cookies = this.storageService.getCookies();
+    const cookies = this.cookiesService.getCookies();
     console.log(cookies);
     this.ionList.closeSlidingItems().then(() => {
       console.log('Octener Cookies..!');
@@ -94,10 +96,9 @@ export class ConversationsPage implements OnInit {
   }
 
   delete() {
-    this.storageService.deleteCookies().then(() => {
-      this.ionList.closeSlidingItems().then(() => {
-        console.log('Eliminar Cookies..!');
-      });
+    this.ionList.closeSlidingItems().then(() => {
+      this.cookiesService.deleteCookies();
+      console.log('Eliminar Cookies..!');
     });
   }
 }

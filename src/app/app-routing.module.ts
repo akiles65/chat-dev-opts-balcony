@@ -11,7 +11,8 @@ const routes: Routes = [
   },
   {
     path: 'chat/:id',
-    loadChildren: () => import('./pages/chat/chat.module').then( m => m.ChatPageModule)
+    loadChildren: () => import('./pages/chat/chat.module').then( m => m.ChatPageModule),
+    canActivate: [UserLoginGuard]
   },
   {
     path: 'conversations',
@@ -24,11 +25,12 @@ const routes: Routes = [
   },
   {
     path: 'register',
-    loadChildren: () => import('./security/register/register.module').then( m => m.RegisterPageModule)
+    loadChildren: () => import('./security/register/register.module').then( m => m.RegisterPageModule),
+    canActivate: [RegisterGuard]
   },
   {
     path: 'settings',
-    loadChildren: () => import('./security/user-settings/user-settings.module').then(m => m.UserSettingsModule),
+    loadChildren: () => import('./security/settings/settings.module').then(m => m.SettingsModule),
     canActivate: [UserLoginGuard]
   },
   {

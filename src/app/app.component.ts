@@ -10,7 +10,7 @@ export class AppComponent {
     { title: 'Conversaciones', url: '/conversations', icon: 'chatbubbles' },
     { title: 'Lista de Usuarios', url: '/users', icon: 'people' },
     { title: 'Actualizar Usuario', url: '/settings', icon: 'settings' },
-    { title: 'Salir', url: '/login', icon: 'exit' },
+    { title: 'Salir', url: '/login', icon: 'exit'},
   ];
   constructor() { }
 

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../shared/services/auth.service';
+import { CookiesService } from '../../shared/services/cookies.service';
 import { IRegister } from '../../shared/interfaces/IRegisterUser';
 import { Router } from '@angular/router';
 import { StorageService } from '../../shared/services/storage.service';
@@ -29,10 +30,11 @@ export class RegisterPage implements OnInit {
   invalidPassword = false;
   invalidUser = false;
 
-  constructor(private storageService: StorageService,
-              private userService: UserService,
-              private authService: AuthService,
-              private router: Router) { }
+  constructor(private authService: AuthService,
+              private cookieService: CookiesService,
+              private router: Router,
+              private storageService: StorageService,
+              private userService: UserService) { }
 
   async ngOnInit() {
     this.newUser.userIp = await this.storageService.getIpStorage();
@@ -53,12 +55,13 @@ export class RegisterPage implements OnInit {
                   userId: doc.id,
                   ...doc.data() as IRegister
                 }
-                this.storageService.setUserStorage(userLogin).then(() => {
-                  this.router.navigateByUrl('/conversations').then(() => {
+                this.cookieService.setCookies().then(() => {
+                  this.storageService.setUserStorage(userLogin).then(() => {
+                    this.router.navigateByUrl('/conversations');
                   });
-                })
+                });
               });
-            })
+            });
             this.reset();
           });
         } else {

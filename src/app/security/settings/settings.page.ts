@@ -4,9 +4,9 @@ import { StorageService } from '../../shared/services/storage.service';
 import { UserService } from '../../shared/services/user.service';
 
 @Component({
-  selector: 'app-user-settings',
-  templateUrl: './user-settings.page.html',
-  styleUrls: ['./user-settings.page.scss'],
+  selector: 'app-settings',
+  templateUrl: './settings.page.html',
+  styleUrls: ['./settings.page.scss'],
 })
 export class UserSettings implements OnInit {
 

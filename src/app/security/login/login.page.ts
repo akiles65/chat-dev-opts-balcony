@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../shared/services/auth.service';
+import { CookiesService } from '../../shared/services/cookies.service';
 import { ILogin, IRegister} from '../../shared/interfaces/IRegisterUser';
 import { Router } from '@angular/router';
 import { StorageService } from '../../shared/services/storage.service';
@@ -19,15 +20,17 @@ export class LoginPage implements OnInit {
 
   constructor(private authService: AuthService,
               private router: Router,
-              private storageService: StorageService) { }
+              private storageService: StorageService,
+              private cookieService: CookiesService) { }
 
   async ngOnInit() {
     this.storageService.cleanStorage();
+    this.cookieService.deleteCookies();
     await this.storageService.getIp();
   }
 
   login() {
-    this.validUser = true;
+    this.validUser = false;
     this.authService.getUser(this.user).then((resp:any) => {
       if (resp.docs.length === 1) {
         resp.docs.map((doc:any) => {
@@ -36,9 +39,11 @@ export class LoginPage implements OnInit {
             ...doc.data() as IRegister
           }
           this.reset();
-          this.storageService.setUserStorage(userLogin).then(() => {
-            this.router.navigateByUrl('/conversations');
-          })
+          this.cookieService.setCookies().then(() => {
+            this.storageService.setUserStorage(userLogin).then(() => {
+              this.router.navigateByUrl('/conversations');
+            });
+          });
         });
       } else {
         this.validUser = true;

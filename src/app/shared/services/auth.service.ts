@@ -18,11 +18,11 @@ export class AuthService {
   constructor() { }
 
   usernameValidate(username: string) {
-    return query.where(DEV_OPTS.USERNAME, '==', username).get();
+    return query.where(DEV_OPTS.USERNAME.toLowerCase(), '==', username.toLowerCase()).get();
   }
 
   getUser(user: ILogin) {
-    return query.where(DEV_OPTS.USERNAME, '==', user.username)
+    return query.where(DEV_OPTS.USERNAME.toLowerCase(), '==', user.username?.toLowerCase())
       .where(DEV_OPTS.PASSWORD, '==', user.password).get();
   }
 }

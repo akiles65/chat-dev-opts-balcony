@@ -53,38 +53,5 @@ export class StorageService {
 
   cleanStorage() {
     this.storage?.remove(DEV_OPTS.USER_LOGIN);
-    localStorage.clear();
-  }
-
-///////////// Cookies ///////////////////////////
-
-  async setCookies() {
-    await CapacitorCookies.setCookie({
-      url: 'http://localhost:4200',
-      key: 'USER_ACTIVE',
-      expires: '7',
-      value: 'true',
-    });
-  }
-
-  getCookies() {
-    return document.cookie;
-  }
-
-  async deleteCookies() {
-    await CapacitorCookies.deleteCookie({
-      url: 'http://localhost:4200',
-      key: 'USER_ACTIVE',
-    });
-  }
-
-  async clearCookiesOnUrl() {
-    await CapacitorCookies.clearCookies({
-      url: 'https://example.com',
-    });
-  }
-
-  async clearAllCookies() {
-    await CapacitorCookies.clearAllCookies();
   }
 }
